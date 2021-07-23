@@ -32,7 +32,7 @@ we should delete the contents of the main folder `/var/lib/postgresql/12/main` w
 
 After deleting the contents of the main folder then we extract the contents of the gzip backup in the main folder
 
-`tar xvfz /path/to/db_file_backup.tar.gz -C /var/lib/postgresql/10/main/`
+`tar xvfz /path/to/db_file_backup.tar.gz -C /var/lib/postgresql/12/main/`
 
 normaly after this you would restore the backup by adding a `recovery.signal` file, but in this case we 
 will use pitrery to do that for us.
