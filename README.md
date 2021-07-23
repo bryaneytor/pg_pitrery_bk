@@ -1,5 +1,6 @@
-# pg_pitrery_bk
-Backup and PITR configuration and instructions for postgresql-12 
+# PostgreSQL PITR with Pitrery fast configuration
+
+Backup and recovery instructions for postgresql-12 using Pitrery for PITR (Point-in-Time Recovery)
 
 # Steps to reproduce an easy and effective backup and restoration of a cluster
 
