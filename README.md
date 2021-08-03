@@ -6,14 +6,14 @@ Backup and recovery instructions for postgresql-12 using Pitrery for PITR (Point
 
 **Requirements**
 - PostgreSQL 12
-- Pitrery (installed and configured)
-- some basic knowledge of backup and recovery, and postgresql config knowledge
+- Pitrery for postgreSQL (installed and configured)
+- Some basic knowledge of backup and recovery, and postgresql config manipulation knowledge
 
-First create a base backup using `pg_basebackup` with needed options to ensure the backup is well
+First create a base backup using `pitrery backup` with needed options to ensure the backup is well
 
 for example:
 
-`pg_basebackup -Ft -X none -D - | gzip > /dir/to/postgresql/backup/db_file_backup.tar.gz`
+`pitrery backup -d some_conf`
 
 Then what you will need is to archive the transactional logs aka the WALs 
 
@@ -30,15 +30,11 @@ we should delete the contents of the main folder `/var/lib/postgresql/12/main` w
 
 **Be aware that using `rm` can be dangerous if you are not paying attention to what you are deleting**
 
-After deleting the contents of the main folder then we extract the contents of the gzip backup in the main folder
-
-`tar xvfz /path/to/db_file_backup.tar.gz -C /var/lib/postgresql/12/main/`
-
-normaly after this you would restore the backup by adding a `recovery.signal` file, but in this case we 
+normaly after this you would restore the backup by adding a `recovery.signal` file and extracting a tar file with the base backup, but in this case we 
 will use pitrery to do that for us.
 
 using the postgres user execute the following command
-
+  
 `pitrery restore -d 'YYYY-MM-DD HH:MM:SS'` adding the date point-in-time where we want to restore our database
 
 Then we check first if the `recovery.signal` is correctly configured, in any case you can add the instructions manually 
