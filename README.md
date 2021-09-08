@@ -1,11 +1,11 @@
 # PostgreSQL PITR with Pitrery fast configuration
 
-Backup and recovery instructions for postgresql-12 using Pitrery for PITR (Point-in-Time Recovery)
+Backup and recovery instructions for postgresql 9.6 and above using Pitrery for PITR (Point-in-Time Recovery)
 
 ## Steps to reproduce an easy and effective backup and restoration of a cluster
 
 **Requirements**
-- PostgreSQL 12
+- PostgreSQL 9.6 or later
 - Pitrery for postgreSQL (installed and configured)
 - Some basic knowledge of backup and recovery, and postgresql config manipulation knowledge
 
@@ -23,27 +23,29 @@ After we have done that we need to stop the service in order to make the restora
 
 `# systemctl stop postgresql@12-main`
 
-Then if there is an existing installation of postgresql in the machine we are going to restore our database cluster 
-we should delete the contents of the main folder `/var/lib/postgresql/12/main` we can do that using the following command
+If there is an existing installation of postgresql in the machine that we are going to restore our database cluster,
+then we should delete the contents of the main folder `/var/lib/postgresql/12/main` we can do that using the following command
 
 `rm -r /var/lib/postgresql/12/main/*`
 
 **Be aware that using `rm` can be dangerous if you are not paying attention to what you are deleting**
 
-normaly after this you would restore the backup by adding a `recovery.signal` file and extracting a tar file with the base backup, but in this case we 
-will use pitrery to do that for us.
+normaly after this you would restore the backup by adding a `recovery.signal` or `recovery.conf` file and extracting a tar file with the base backup, but in this case we will let pitrery do that for us.
 
 using the postgres user execute the following command
   
 `pitrery restore -d 'YYYY-MM-DD HH:MM:SS'` adding the date point-in-time where we want to restore our database
 
-Then we check first if the `recovery.signal` is correctly configured, in any case you can add the instructions manually 
+Then we check first if the `recovery.signal` or `recovery.conf` is correctly configured, in any case you can add the instructions manually 
 in case it is not configured.
 
-The start the postgresql server and check the logs for prompt
+Then start the postgresql server and check the logs for prompt
 
 `systemctl start postgresql@12-main && tail -f /var/log/postgresql/postgresql.log`
 
 And that should be it
 
-TODO: Add more detail into each instruction
+TODO:
+- Add more detail into each instruction
+- Expand on other posible utilities of pitrery
+
